@@ -3,6 +3,7 @@ services:
 
     redis:
         image: redis
+        restart: always
 
     db:
         image: mariadb
@@ -12,16 +13,20 @@ services:
         volumes:
             - ./mariadb:/var/lib/mysql
         ports:
-            - 8000:80
+            - "3307:3306" 
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
+        restart: always
         environment:
+            MYSQL_USERNAME: root
             MYSQL_ROOT_PASSWORD: root
         ports:
-            - 8080:80
+            - "8001:80"
+        links: 
+            - mariadb
 
     mailcatcher:
         image: schickling/mailcatcher
         ports:
-            - 1080:1080
+            - "1080:1080"
